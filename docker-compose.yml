@@ -1,0 +1,29 @@
+services:
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: mysql-cluster
+    environment:
+      MYSQL_ROOT_PASSWORD: 1122q!
+      MYSQL_DATABASE: test
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - spring_network
+#  ms-franchise-neg:
+#    build: .
+#    container_name: ms-franchise-neg
+#    ports:
+#      - "8001:8001"
+#    depends_on:
+#      - mysql
+#    networks:
+#      - spring_network
+volumes:
+  mysql_data:
+    name: mysql_nequi_data
+networks:
+  spring_network:
+    driver: bridge

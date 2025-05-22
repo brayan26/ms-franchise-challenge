@@ -1,0 +1,75 @@
+name: Java project with Maven
+
+on:
+  push:
+    branches: [main, develop, staging]
+  pull_request:
+    branches: [main, develop, staging]
+    types: [opened, synchronize]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+          cache: 'maven'
+      - name: Build with Maven
+        run: mvn -B clean compile --file pom.xml
+
+  BuildContainer:
+    needs: [ compile ]
+    if: ${{ github.event_name == 'push' || github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+    outputs:
+      DOCKER_IMAGE: ${{ steps.set-output.outputs.docker_image }}
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract project version
+        run:  echo "PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: .
+          push: true
+          tags: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.PROJECT_VERSION }}"
+          labels: ${{ steps.meta.outputs.labels }}`
+
+      - name: Project version compiled
+        run:  echo $PROJECT_VERSION
+
+      - name: Set output environment variable
+        id: set-output
+        run: |
+          echo "DOCKER_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.PROJECT_VERSION }}" >> $GITHUB_ENV
+          echo "docker_image=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.PROJECT_VERSION }}" >> $GITHUB_OUTPUT
+
