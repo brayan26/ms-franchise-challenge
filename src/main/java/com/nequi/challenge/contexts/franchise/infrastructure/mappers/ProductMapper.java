@@ -2,6 +2,7 @@ package com.nequi.challenge.contexts.franchise.infrastructure.mappers;
 
 import com.nequi.challenge.contexts.franchise.domain.model.Product;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.FranchiseRequestDto;
+import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.ProductRequestDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.ProductResponseDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.persistence.collections.ProductDocument;
 import org.mapstruct.Mapper;
@@ -9,7 +10,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-   Product toDomain(FranchiseRequestDto dto);
+   Product toDomain(ProductRequestDto dto);
 
    ProductDocument toEntity(Product domain);
 
