@@ -37,7 +37,7 @@ public class InventoryRepository implements IInventoryRepository {
                   BuildErrorUtil.create(ErrorMessages.PRODUCT_NOT_FOUND_CODE, ErrorMessages.PRODUCT_NOT_FOUND_DESCRIPTION)
             ))
       );
-      Mono<BranchOfficeDocument> branchOfficeMono = branchOfficeRepository.findById(inventory.branchOfficeId()).switchIfEmpty(
+      branchOfficeRepository.findById(inventory.branchOfficeId()).switchIfEmpty(
             Mono.error(new GenericBadRequestException(
                   String.format("Branch office id <%s> doesn't exists", inventory.branchOfficeId()),
                   BuildErrorUtil.create(ErrorMessages.BRANCHOFFICE_NOT_FOUND_CODE, ErrorMessages.BRANCHOFFICE_NOT_FOUND_DESCRIPTION)
@@ -81,7 +81,6 @@ public class InventoryRepository implements IInventoryRepository {
    public Flux<Inventory> getTopStockProductPerBranch(String franchiseId) {
       return this.branchOfficeRepository.findAllByFranchiseId(franchiseId)
             .flatMap(branch -> repository.findByBranchOfficeId(branch.getId())
-                  .sort(Comparator.comparingInt(InventoryDocument::getStock).reversed()) // sort in-memory
                   .take(1) // top stock product
                   .flatMap(inv -> productRepository.findById(inv.getProductId())
                         .map(product -> Inventory.builder()
@@ -101,7 +100,18 @@ public class InventoryRepository implements IInventoryRepository {
 
    @Override
    public Flux<Inventory> getInventoryByBranchOffice(String branchOfficeId) {
-      return this.repository.findByBranchOfficeId(branchOfficeId)
-            .map(this.mapper::toDomain);
+      return repository.findByBranchOfficeId(branchOfficeId)
+            .flatMap(inv -> this.productRepository.findById(inv.getProductId())
+                  .map(product -> Inventory.builder()
+                        .id(inv.getId())
+                        .branchOfficeId(inv.getBranchOfficeId())
+                        .productId(product.getId())
+                        .productName(product.getName())
+                        .productPrice(inv.getPrice())
+                        .stock(inv.getStock())
+                        .created_at(inv.getCreated_at())
+                        .updated_at(inv.getUpdated_at())
+                        .build())
+            );
    }
 }
