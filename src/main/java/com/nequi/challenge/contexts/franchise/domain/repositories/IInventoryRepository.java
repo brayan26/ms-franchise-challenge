@@ -1,11 +1,11 @@
 package com.nequi.challenge.contexts.franchise.domain.repositories;
 
 import com.nequi.challenge.contexts.franchise.domain.model.Inventory;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface IInventoryRepository {
-   Inventory addProduct(Inventory inventory);
-   void updateStock(Inventory inventory);
-   List<Inventory> listByBranchOffice(Long branchOfficeId);
+   Mono<Inventory> addProduct(Inventory inventory);
+   Mono<Void> updateStock(Inventory inventory);
+   Flux<Inventory> listByBranchOffice(String branchOfficeId);
 }
