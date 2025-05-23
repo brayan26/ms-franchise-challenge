@@ -1,7 +1,7 @@
 package com.nequi.challenge.contexts.franchise.infrastructure.adapters.handlers;
 
-import com.nequi.challenge.contexts.franchise.domain.model.Franchise;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.FranchiseRequestDto;
+import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.FranchiseResponseDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.mappers.FranchiseMapper;
 import com.nequi.challenge.contexts.franchise.infrastructure.services.FranchiseService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class FranchiseHandler {
             .flatMap(dto -> this.service.create(this.mapper.toDomain(dto)))
             .flatMap(response -> ServerResponse
                   .status(HttpStatus.CREATED)
-                  .bodyValue(response)
+                  .bodyValue(this.mapper.toResponseDto(response))
             );
    }
 
@@ -32,7 +32,7 @@ public class FranchiseHandler {
             .flatMap(dto -> this.service.update(id, this.mapper.toDomain(dto)))
             .flatMap(response -> ServerResponse
                   .status(HttpStatus.OK)
-                  .bodyValue(response)
+                  .bodyValue(this.mapper.toResponseDto(response))
             );
    }
 
@@ -41,13 +41,13 @@ public class FranchiseHandler {
       return this.service.findById(franchiseId)
             .flatMap(response -> ServerResponse
             .status(HttpStatus.OK)
-            .bodyValue(response)
+            .bodyValue(this.mapper.toResponseDto(response))
       );
    }
 
    public Mono<ServerResponse> findAll(ServerRequest request) {
       return ServerResponse
             .ok()
-            .body(this.service.findAll(), Franchise.class);
+            .body(this.service.findAll().map(this.mapper::toResponseDto), FranchiseResponseDto.class);
    }
 }
