@@ -38,7 +38,7 @@ public class InventoryHandler {
 
    public Mono<ServerResponse> findByBranchOfficeId(ServerRequest request) {
       String branchOfficeId = request.pathVariable("branchOfficeId");
-      Flux<InventoryResponseDto> response = this.service.topStopProductPerBranchOfficeOfFranchise(branchOfficeId)
+      Flux<InventoryResponseDto> response = this.service.findInventoryByBranchOffice(branchOfficeId)
             .map(this.mapper::toResponseDto);
       return ServerResponse.ok().body(response, InventoryResponseDto.class);
    }
