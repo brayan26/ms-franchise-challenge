@@ -9,5 +9,6 @@ import java.util.List;
 public interface IFranchiseRepository {
    Mono<Franchise> create(Franchise franchise);
    Mono<Franchise> update(String id, Franchise franchise);
+   Mono<Franchise> findOne(String id);
    Flux<Franchise> findAll();
 }
