@@ -7,5 +7,5 @@ import reactor.core.publisher.Mono;
 public interface IInventoryRepository {
    Mono<Inventory> addProduct(Inventory inventory);
    Mono<Void> updateStock(Inventory inventory);
-   Flux<Inventory> listByBranchOffice(String branchOfficeId);
+   Flux<Inventory> getTopStockProductPerBranch(String branchOfficeId);
 }
