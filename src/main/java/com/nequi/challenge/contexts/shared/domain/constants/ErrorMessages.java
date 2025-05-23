@@ -11,4 +11,9 @@ public class ErrorMessages {
    //Products
    public static final String PRODUCT_NOT_FOUND_CODE = "PRD-001";
    public static final String PRODUCT_NOT_FOUND_DESCRIPTION = "Product id not found";
+   //Inventory
+   public static final String INVENTORY_ALREADY_EXIST_CODE = "INV-001";
+   public static final String INVENTORY_ALREADY_EXIST_DESCRIPTION = "The product already exists in this branch office inventory";
+   public static final String INVENTORY_NOT_FOUND_CODE = "INV-002";
+   public static final String INVENTORY_NOT_FOUND_DESCRIPTION = "The product does not exist in the inventory of this branch";
 }
