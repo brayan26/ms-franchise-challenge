@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 @Component
-public class InventoryStockIUpdaterUseCase {
+public class InventoryStockUpdaterUseCase {
    private final IInventoryRepository repository;
 
-   public InventoryStockIUpdaterUseCase(IInventoryRepository repository) {
+   public InventoryStockUpdaterUseCase(IInventoryRepository repository) {
       this.repository = repository;
    }
 
