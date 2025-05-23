@@ -1,12 +1,11 @@
 package com.nequi.challenge.contexts.franchise.domain.repositories;
 
 import com.nequi.challenge.contexts.franchise.domain.model.BranchOffice;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface IBranchOfficeRepository {
-   BranchOffice create(BranchOffice branchOffice);
-   BranchOffice update(Long id, BranchOffice branchOffice);
-   List<BranchOffice> findAll();
-   List<BranchOffice> findByFranchiseId(Long franchiseId);
+   Mono<BranchOffice> create(BranchOffice branchOffice);
+   Mono<BranchOffice> update(String id, BranchOffice branchOffice);
+   Flux<BranchOffice> findByFranchiseId(String franchiseId);
 }

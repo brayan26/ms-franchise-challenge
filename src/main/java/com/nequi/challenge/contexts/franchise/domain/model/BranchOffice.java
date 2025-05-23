@@ -1,4 +1,7 @@
 package com.nequi.challenge.contexts.franchise.domain.model;
 
-public record BranchOffice (Long id, String name, String franchiseName){
+import java.time.LocalDateTime;
+
+public record BranchOffice (String id, String name, String franchiseId,
+                            LocalDateTime created_at, LocalDateTime updated_at){
 }

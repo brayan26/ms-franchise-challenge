@@ -1,11 +1,13 @@
 package com.nequi.challenge.contexts.franchise.domain.repositories;
 
 import com.nequi.challenge.contexts.franchise.domain.model.Franchise;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 public interface IFranchiseRepository {
-   Franchise create(Franchise franchise);
-   Franchise update(Long id, Franchise franchise);
-   List<Franchise> findAll();
+   Mono<Franchise> create(Franchise franchise);
+   Mono<Franchise> update(String id, Franchise franchise);
+   Flux<Franchise> findAll();
 }
