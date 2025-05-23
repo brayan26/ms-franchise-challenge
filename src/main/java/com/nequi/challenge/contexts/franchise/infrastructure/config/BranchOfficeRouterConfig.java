@@ -31,6 +31,8 @@ public class BranchOfficeRouterConfig {
                beanClass = BranchOfficeHandler.class,
                beanMethod = "create",
                operation = @Operation(
+                     operationId = "create",
+                     summary = "create a new branch office",
                      requestBody = @RequestBody(
                            required = true,
                            content = @Content(

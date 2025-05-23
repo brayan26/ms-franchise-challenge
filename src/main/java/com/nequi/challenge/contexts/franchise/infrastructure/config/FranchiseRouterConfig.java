@@ -27,9 +27,11 @@ public class FranchiseRouterConfig {
                path = "/franchise/create",
                produces = {MediaType.APPLICATION_JSON_VALUE},
                method = RequestMethod.POST,
-               beanClass = FranchiseRequestDto.class,
+               beanClass = FranchiseHandler.class,
                beanMethod = "create",
                operation = @Operation(
+                     operationId = "create",
+                     summary = "create a new franchise",
                      requestBody = @RequestBody(
                            required = true,
                            content = @Content(
@@ -44,10 +46,12 @@ public class FranchiseRouterConfig {
          @RouterOperation(
                path = "/franchise/{id}/update",
                produces = {MediaType.APPLICATION_JSON_VALUE},
-               method = RequestMethod.POST,
-               beanClass = FranchiseRequestDto.class,
+               method = RequestMethod.PATCH,
+               beanClass = FranchiseHandler.class,
                beanMethod = "update",
                operation = @Operation(
+                     operationId = "update",
+                     summary = "Update franchise",
                      parameters = {
                            @Parameter(
                                  name = "id",
@@ -72,9 +76,11 @@ public class FranchiseRouterConfig {
                path = "/franchise/{id}/findOne",
                produces = {MediaType.APPLICATION_JSON_VALUE},
                method = RequestMethod.GET,
-               beanClass = FranchiseRequestDto.class,
+               beanClass = FranchiseHandler.class,
                beanMethod = "findOne",
                operation = @Operation(
+                     operationId = "findOne",
+                     summary = "Get a franchise",
                      parameters = {
                            @Parameter(
                                  name = "id",
@@ -91,14 +97,16 @@ public class FranchiseRouterConfig {
                )
          ),
          @RouterOperation(
-               path = "/franchise/{id}/update",
+               path = "/franchise/findAll",
                produces = {MediaType.APPLICATION_JSON_VALUE},
-               method = RequestMethod.POST,
-               beanClass = FranchiseRequestDto.class,
+               method = RequestMethod.GET,
+               beanClass = FranchiseHandler.class,
                beanMethod = "findAll",
                operation = @Operation(
+                     operationId = "findAll",
+                     summary = "Get all franchises",
                      responses = {
-                           @ApiResponse(responseCode = "200", description = "Franchise fetched"),
+                           @ApiResponse(responseCode = "200", description = "Franchises fetched"),
                      }
                )
          )
