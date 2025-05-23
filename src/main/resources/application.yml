@@ -1,6 +1,10 @@
 server:
   port: 8001
 
+springdoc:
+  webflux:
+    base-path: /api/v1
+
 spring:
   webflux:
     base-path: /api/v1
