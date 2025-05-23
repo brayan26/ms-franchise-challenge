@@ -12,15 +12,22 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class BranchOfficeService {
+   private final FranchiseService franchiseService;
    private final BranchOfficeCreatorUseCase branchOfficeCreatorUseCase;
    private final BranchOfficeUpdaterUseCase branchOfficeUpdaterUseCase;
    private final BranchOfficeLocatorByFranchiseIdUseCase branchOfficeLocatorByFranchiseIdUseCase;
 
    public Mono<BranchOffice> create(BranchOffice domain) {
+      // validate franchise
+      this.franchiseService.findById(domain.franchiseId());
+      // save branch office
       return this.branchOfficeCreatorUseCase.execute(domain);
    }
 
    public Mono<BranchOffice> update(String id, BranchOffice domain) {
+      // validate franchise
+      this.franchiseService.findById(domain.franchiseId());
+      // save branch office
       return this.branchOfficeUpdaterUseCase.execute(id, domain);
    }
 
