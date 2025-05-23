@@ -46,7 +46,6 @@ public class ProductHandler {
 
    public Mono<ServerResponse> delete(ServerRequest request) {
       String id = request.pathVariable("id");
-      this.service.delete(id);
-      return ServerResponse.ok().build();
+      return this.service.delete(id).then(ServerResponse.noContent().build());
    }
 }
