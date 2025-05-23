@@ -83,4 +83,10 @@ public class InventoryRepository implements IInventoryRepository {
                   )
             );
    }
+
+   @Override
+   public Flux<Inventory> getInventoryByBranchOffice(String branchOfficeId) {
+      return this.repository.findByBranchOfficeId(branchOfficeId)
+            .map(this.mapper::toDomain);
+   }
 }
