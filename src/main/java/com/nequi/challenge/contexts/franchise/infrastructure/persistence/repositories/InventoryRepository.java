@@ -3,7 +3,9 @@ package com.nequi.challenge.contexts.franchise.infrastructure.persistence.reposi
 import com.nequi.challenge.contexts.franchise.domain.model.Inventory;
 import com.nequi.challenge.contexts.franchise.domain.repositories.IInventoryRepository;
 import com.nequi.challenge.contexts.franchise.infrastructure.mappers.InventoryMapper;
+import com.nequi.challenge.contexts.franchise.infrastructure.persistence.collections.BranchOfficeDocument;
 import com.nequi.challenge.contexts.franchise.infrastructure.persistence.collections.InventoryDocument;
+import com.nequi.challenge.contexts.franchise.infrastructure.persistence.collections.ProductDocument;
 import com.nequi.challenge.contexts.franchise.infrastructure.persistence.repositories.mongo.MongoBranchOfficeRepository;
 import com.nequi.challenge.contexts.franchise.infrastructure.persistence.repositories.mongo.MongoInventoryRepository;
 import com.nequi.challenge.contexts.franchise.infrastructure.persistence.repositories.mongo.MongoProductRepository;
@@ -29,6 +31,19 @@ public class InventoryRepository implements IInventoryRepository {
 
    @Override
    public Mono<Inventory> addProduct(Inventory inventory) {
+      productRepository.findById(inventory.productId()).switchIfEmpty(
+            Mono.error(new GenericBadRequestException(
+                  String.format("Product id <%s> doesn't exists", inventory.productId()),
+                  BuildErrorUtil.create(ErrorMessages.PRODUCT_NOT_FOUND_CODE, ErrorMessages.PRODUCT_NOT_FOUND_DESCRIPTION)
+            ))
+      );
+      Mono<BranchOfficeDocument> branchOfficeMono = branchOfficeRepository.findById(inventory.branchOfficeId()).switchIfEmpty(
+            Mono.error(new GenericBadRequestException(
+                  String.format("Branch office id <%s> doesn't exists", inventory.branchOfficeId()),
+                  BuildErrorUtil.create(ErrorMessages.BRANCHOFFICE_NOT_FOUND_CODE, ErrorMessages.BRANCHOFFICE_NOT_FOUND_DESCRIPTION)
+            ))
+      );
+
       return this.repository.existsByBranchOfficeIdAndProductId(
                   inventory.branchOfficeId(), inventory.productId())
             .flatMap(exists -> {
@@ -50,7 +65,7 @@ public class InventoryRepository implements IInventoryRepository {
       return this.repository.findByBranchOfficeIdAndProductId(
                   inventory.branchOfficeId(), inventory.productId())
             .switchIfEmpty(Mono.error(new GenericNotFoundException(
-                  String.format("The product does not exist in the inventory of this branch office %s", inventory.branchOfficeId()),
+                  String.format("The product <%s> or branch office id <%s> does not exist in the inventory of this branch office", inventory.productId(), inventory.branchOfficeId()),
                   BuildErrorUtil.create(ErrorMessages.INVENTORY_NOT_FOUND_CODE, ErrorMessages.INVENTORY_NOT_FOUND_DESCRIPTION)
             )))
             .flatMap(document -> {

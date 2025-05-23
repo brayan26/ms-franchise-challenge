@@ -6,11 +6,10 @@ import java.math.BigDecimal;
 
 public record InventoryRequestDto(
       @NotNull
-      Long branchOfficeId,
+      String branchOfficeId,
       @NotNull
-      Long productId,
+      String productId,
       @NotNull
       int stock,
-      @NotNull
       BigDecimal priceAmount
 ) {}

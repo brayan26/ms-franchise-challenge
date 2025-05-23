@@ -13,8 +13,6 @@ public interface InventoryMapper {
    @Mapping(source = "productId", target = "productId")
    @Mapping(source = "priceAmount", target = "productPrice")
    @Mapping(source = "stock", target = "stock")
-   @Mapping(source = "created_at", target = "created_at")
-   @Mapping(source = "updated_at", target = "updated_at")
    Inventory toDomain(InventoryRequestDto dto);
 
    @Mapping(source = "branchOfficeId", target = "branchOfficeId")
