@@ -1,7 +1,8 @@
 package com.nequi.challenge.contexts.franchise.infrastructure.config;
 
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.FranchiseRequestDto;
-import com.nequi.challenge.contexts.franchise.infrastructure.adapters.handlers.FranchiseHandler;
+import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.ProductRequestDto;
+import com.nequi.challenge.contexts.franchise.infrastructure.adapters.handlers.ProductHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -20,44 +21,44 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 @Configuration
-public class FranchiseRouterConfig {
+public class ProductRouterConfig {
    @Bean
    @RouterOperations({
          @RouterOperation(
-               path = "/franchise/create",
+               path = "/product/create",
                produces = {MediaType.APPLICATION_JSON_VALUE},
                method = RequestMethod.POST,
-               beanClass = FranchiseHandler.class,
+               beanClass = ProductHandler.class,
                beanMethod = "create",
                operation = @Operation(
                      operationId = "create",
-                     summary = "create a new franchise",
+                     summary = "Create a new product",
                      requestBody = @RequestBody(
                            required = true,
                            content = @Content(
-                                 schema = @Schema(implementation = FranchiseRequestDto.class)
+                                 schema = @Schema(implementation = ProductRequestDto.class)
                            )
                      ),
                      responses = {
-                           @ApiResponse(responseCode = "201", description = "Franchise created"),
+                           @ApiResponse(responseCode = "201", description = "Product created"),
                      }
                )
          ),
          @RouterOperation(
-               path = "/franchise/{id}/update",
+               path = "/product/{id}/update",
                produces = {MediaType.APPLICATION_JSON_VALUE},
                method = RequestMethod.PATCH,
-               beanClass = FranchiseHandler.class,
+               beanClass = ProductHandler.class,
                beanMethod = "update",
                operation = @Operation(
                      operationId = "update",
-                     summary = "Update franchise",
+                     summary = "Update product",
                      parameters = {
                            @Parameter(
                                  name = "id",
                                  in = ParameterIn.PATH,
                                  required = true,
-                                 description = "Franchise id"
+                                 description = "Product id"
                            ),
                      },
                      requestBody = @RequestBody(
@@ -67,56 +68,65 @@ public class FranchiseRouterConfig {
                            )
                      ),
                      responses = {
-                           @ApiResponse(responseCode = "200", description = "Franchise updated"),
-                           @ApiResponse(responseCode = "404", description = "Franchise id not found"),
+                           @ApiResponse(responseCode = "200", description = "Product updated"),
+                           @ApiResponse(responseCode = "404", description = "Product id not found"),
                      }
                )
          ),
          @RouterOperation(
-               path = "/franchise/{id}/findOne",
+               path = "/product/{id}/findOne",
                produces = {MediaType.APPLICATION_JSON_VALUE},
                method = RequestMethod.GET,
-               beanClass = FranchiseHandler.class,
-               beanMethod = "findOne",
+               beanClass = ProductHandler.class,
+               beanMethod = "findById",
                operation = @Operation(
                      operationId = "findOne",
-                     summary = "Get a franchise",
+                     summary = "Get a product by id",
                      parameters = {
                            @Parameter(
                                  name = "id",
                                  in = ParameterIn.PATH,
                                  required = true,
-                                 description = "Franchise id"
+                                 description = "Product id"
                            ),
                      },
 
                      responses = {
-                           @ApiResponse(responseCode = "200", description = "Franchise fetched"),
-                           @ApiResponse(responseCode = "404", description = "Franchise id not found"),
+                           @ApiResponse(responseCode = "200", description = "Product fetched"),
+                           @ApiResponse(responseCode = "404", description = "Product id not found"),
                      }
                )
          ),
          @RouterOperation(
-               path = "/franchise/findAll",
+               path = "/product/{id}",
                produces = {MediaType.APPLICATION_JSON_VALUE},
-               method = RequestMethod.GET,
-               beanClass = FranchiseHandler.class,
-               beanMethod = "findAll",
+               method = RequestMethod.DELETE,
+               beanClass = ProductHandler.class,
+               beanMethod = "delete",
                operation = @Operation(
-                     operationId = "findAll",
-                     summary = "Get all franchises",
+                     operationId = "delete",
+                     summary = "Delete a product by id",
+                     parameters = {
+                           @Parameter(
+                                 name = "id",
+                                 in = ParameterIn.PATH,
+                                 required = true,
+                                 description = "Product id"
+                           ),
+                     },
                      responses = {
-                           @ApiResponse(responseCode = "200", description = "Franchises fetched"),
+                           @ApiResponse(responseCode = "204", description = "Product deleted"),
+                           @ApiResponse(responseCode = "404", description = "Product id not found"),
                      }
                )
          )
    })
-   public RouterFunction<ServerResponse> routerFranchiseFunction(FranchiseHandler franchiseHandler) {
+   public RouterFunction<ServerResponse> routerProductFunction(ProductHandler productHandler) {
       return RouterFunctions.route()
-            .POST("/franchise/create", franchiseHandler::create)
-            .PATCH("/franchise/{id}/update", franchiseHandler::update)
-            .GET("/franchise/{id}/findOne", franchiseHandler::findById)
-            .GET("/franchise/findAll", franchiseHandler::findAll)
+            .POST("/product/create", productHandler::create)
+            .PATCH("/product/{id}/update", productHandler::update)
+            .GET("/product/{id}/findOne", productHandler::findById)
+            .DELETE("/product/{id}", productHandler::delete)
             .build();
    }
 }
