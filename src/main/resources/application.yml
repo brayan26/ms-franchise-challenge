@@ -6,6 +6,9 @@ springdoc:
     base-path: /api/v1
 
 spring:
+  error:
+    whitelabel:
+      enabled: false
   webflux:
     base-path: /api/v1
   application:

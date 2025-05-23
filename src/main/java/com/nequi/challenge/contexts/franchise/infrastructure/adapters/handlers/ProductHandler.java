@@ -3,6 +3,7 @@ package com.nequi.challenge.contexts.franchise.infrastructure.adapters.handlers;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.ProductRequestDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.mappers.ProductMapper;
 import com.nequi.challenge.contexts.franchise.infrastructure.services.ProductService;
+import com.nequi.challenge.contexts.shared.infrastructure.util.BuildErrorUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,8 @@ public class ProductHandler {
             .flatMap(response -> ServerResponse
                   .status(HttpStatus.CREATED)
                   .bodyValue(this.mapper.toResponseDto(response))
-            );
+            )
+            .onErrorResume(BuildErrorUtil::buildErrorResponse);
    }
 
    public Mono<ServerResponse> update(ServerRequest request) {
@@ -32,7 +34,8 @@ public class ProductHandler {
             .flatMap(response -> ServerResponse
                   .status(HttpStatus.OK)
                   .bodyValue(this.mapper.toResponseDto(response))
-            );
+            )
+            .onErrorResume(BuildErrorUtil::buildErrorResponse);
    }
 
    public Mono<ServerResponse> findById(ServerRequest request) {
@@ -41,7 +44,8 @@ public class ProductHandler {
             .flatMap(response -> ServerResponse
                   .status(HttpStatus.OK)
                   .bodyValue(this.mapper.toResponseDto(response))
-            );
+            )
+            .onErrorResume(BuildErrorUtil::buildErrorResponse);
    }
 
    public Mono<ServerResponse> delete(ServerRequest request) {

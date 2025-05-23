@@ -3,20 +3,25 @@ package com.nequi.challenge.contexts.franchise.domain.model;
 import lombok.Builder;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public record Inventory(
-      Long branchOfficeId,
+      String id,
+      String branchOfficeId,
       String branchOfficeName,
-      Long productId,
+      String productId,
       String productName,
       BigDecimal productPrice,
-      int stock
+      int stock,
+      LocalDateTime created_at,
+      LocalDateTime updated_at
 ) {
 
    @Builder
-   public static Inventory create(Long branchOfficeId, String branchOfficeName, Long productId,
-                                  String productName, BigDecimal productPrice, int stock) {
-      return new Inventory(branchOfficeId, branchOfficeName, productId, productName, productPrice, stock);
+   public static Inventory create(String id, String branchOfficeId, String branchOfficeName, String productId,
+                                  String productName, BigDecimal productPrice, int stock,
+                                  LocalDateTime created_at, LocalDateTime updated_at) {
+      return new Inventory(id, branchOfficeId, branchOfficeName, productId, productName, productPrice, stock, created_at, updated_at);
    }
 }
 

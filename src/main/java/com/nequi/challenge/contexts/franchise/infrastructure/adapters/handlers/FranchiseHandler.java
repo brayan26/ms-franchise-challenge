@@ -4,6 +4,7 @@ import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.Franch
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.FranchiseResponseDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.mappers.FranchiseMapper;
 import com.nequi.challenge.contexts.franchise.infrastructure.services.FranchiseService;
+import com.nequi.challenge.contexts.shared.infrastructure.util.BuildErrorUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,8 @@ public class FranchiseHandler {
             .flatMap(response -> ServerResponse
                   .status(HttpStatus.CREATED)
                   .bodyValue(this.mapper.toResponseDto(response))
-            );
+            )
+            .onErrorResume(BuildErrorUtil::buildErrorResponse);
    }
 
    public Mono<ServerResponse> update(ServerRequest request) {
@@ -33,7 +35,7 @@ public class FranchiseHandler {
             .flatMap(response -> ServerResponse
                   .status(HttpStatus.OK)
                   .bodyValue(this.mapper.toResponseDto(response))
-            );
+            ).onErrorResume(BuildErrorUtil::buildErrorResponse);
    }
 
    public Mono<ServerResponse> findById(ServerRequest request) {
