@@ -12,6 +12,8 @@ public class ErrorMessages {
    public static final String PRODUCT_NOT_FOUND_CODE = "PRD-001";
    public static final String PRODUCT_NOT_FOUND_DESCRIPTION = "Product id not found";
    //Inventory
+   public static final String INVENTORY_GENERIC_EXIST_CODE = "INV-000";
+   public static final String INVENTORY_GENERIC_EXIST_DESCRIPTION = "Product or branch office id not found";
    public static final String INVENTORY_ALREADY_EXIST_CODE = "INV-001";
    public static final String INVENTORY_ALREADY_EXIST_DESCRIPTION = "The product already exists in this branch office inventory";
    public static final String INVENTORY_NOT_FOUND_CODE = "INV-002";
