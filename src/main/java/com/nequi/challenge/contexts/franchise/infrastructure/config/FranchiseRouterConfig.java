@@ -101,9 +101,9 @@ public class FranchiseRouterConfig {
                            @ApiResponse(responseCode = "200", description = "Franchise fetched"),
                      }
                )
-         ),
+         )
    })
-   public RouterFunction<ServerResponse> routerFunction(FranchiseHandler franchiseHandler) {
+   public RouterFunction<ServerResponse> routerFranchiseFunction(FranchiseHandler franchiseHandler) {
       return RouterFunctions.route()
             .POST("/franchise/create", franchiseHandler::create)
             .PATCH("/franchise/{id}/update", franchiseHandler::update)
