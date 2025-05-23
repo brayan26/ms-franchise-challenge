@@ -1,27 +1,24 @@
-package com.nequi.challenge.contexts.franchise.infrastructure.persistence.repositories;
+package com.nequi.challenge.contexts.franchise.infrastructure.repositories;
 
 import com.nequi.challenge.contexts.franchise.domain.model.Inventory;
 import com.nequi.challenge.contexts.franchise.domain.repositories.IInventoryRepository;
 import com.nequi.challenge.contexts.franchise.infrastructure.mappers.InventoryMapper;
-import com.nequi.challenge.contexts.franchise.infrastructure.persistence.collections.BranchOfficeDocument;
 import com.nequi.challenge.contexts.franchise.infrastructure.persistence.collections.InventoryDocument;
-import com.nequi.challenge.contexts.franchise.infrastructure.persistence.collections.ProductDocument;
-import com.nequi.challenge.contexts.franchise.infrastructure.persistence.repositories.mongo.MongoBranchOfficeRepository;
-import com.nequi.challenge.contexts.franchise.infrastructure.persistence.repositories.mongo.MongoInventoryRepository;
-import com.nequi.challenge.contexts.franchise.infrastructure.persistence.repositories.mongo.MongoProductRepository;
+import com.nequi.challenge.contexts.franchise.infrastructure.persistence.repositories.MongoBranchOfficeRepository;
+import com.nequi.challenge.contexts.franchise.infrastructure.persistence.repositories.MongoInventoryRepository;
+import com.nequi.challenge.contexts.franchise.infrastructure.persistence.repositories.MongoProductRepository;
 import com.nequi.challenge.contexts.shared.domain.constants.ErrorMessages;
 import com.nequi.challenge.contexts.shared.domain.exceptions.GenericBadRequestException;
 import com.nequi.challenge.contexts.shared.domain.exceptions.GenericNotFoundException;
 import com.nequi.challenge.contexts.shared.infrastructure.util.BuildErrorUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class InventoryRepository implements IInventoryRepository {
    private final MongoInventoryRepository repository;
