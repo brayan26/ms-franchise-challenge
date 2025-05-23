@@ -22,7 +22,7 @@ public class ProductService {
    }
 
    public Mono<Product> update(String id, Product product) {
-      return this.productCreatorUseCase.execute(product);
+      return this.productUpdaterUseCase.execute(id, product);
    }
 
    public Mono<Product> findById(String productId) {
