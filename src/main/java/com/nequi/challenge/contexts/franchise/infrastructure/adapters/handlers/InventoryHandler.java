@@ -4,7 +4,7 @@ import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.DtoVal
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.InventoryRequestDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.InventoryResponseDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.mappers.InventoryMapper;
-import com.nequi.challenge.contexts.franchise.infrastructure.services.InventoryService;
+import com.nequi.challenge.contexts.franchise.application.services.InventoryService;
 import com.nequi.challenge.contexts.shared.infrastructure.util.BuildErrorUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
