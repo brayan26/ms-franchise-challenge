@@ -11,7 +11,7 @@
     - [Project anatomy](#project-anatomy)
     - [The Dependency Rule](#the-dependency-rule)
     - [Server, Routes and Plugins](#server-routes-and-plugins)
-    - [RouterConfig](#controllers)
+    - [RouterConfig](#RouterConfig)
     - [Use Cases](#use-cases)
 
 - [TDD](#tdd)
@@ -23,7 +23,7 @@
     - [Value Object](#value-object)
 
 ## Getting started
-SpringBoot application using JDK 17 for the Nisum company challenge, on CRUD operations of the user table
+SpringBoot application using JDK 17 for the Nequi company challenge, on CRUD operations of franchise
 
 ## Stack
 Hexagonal architecture + DDD + Solid principles + Design patterns (Mother Object, Builder Pattern, Create Pattern) + Unit test
@@ -36,7 +36,7 @@ Hexagonal architecture + DDD + Solid principles + Design patterns (Mother Object
 Run application using maven
 
 ```
-docker-compose -f docker-compose
+run: sh docker-compose up
 ```
 
 **NOTE: if you use Linux or Mac exec ./mvnw, for windows ./mvnw.cmd**
@@ -53,7 +53,8 @@ run test: sh ./mvnw clean test
 ```
 
 ## Swagger
-access locally via the route http://localhost:8001/api/v1/swagger-ui/index.html
+Access locally via the route http://localhost:8001/api/v1/swagger-ui/index.html
+Access remote via the route http://167.172.3.41/api/v1/swagger-ui/index.html
 
 ## Domain Driven Architectures
 
