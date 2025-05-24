@@ -142,11 +142,11 @@ jobs:
 
       - name: Update image tag in manifest
         run: |
-          sed -i "s|image:.*|image: ${{ needs.BuildContainer.outputs.DOCKER_IMAGE }}|g" k8s/deployment.yaml
+          sed -i "s|image:.*|image: ${{ needs.BuildContainer.outputs.DOCKER_IMAGE }}|g" k8s/deployment.yml
 
       - name: Update database string connection
         run: |
-          sed -i "s|MONGO_URL_PLACEHOLDER|${{ secrets.DB_CONNECTION_STRING }}|g" k8s/deployment.yaml
+          sed -i "s|MONGO_URL_PLACEHOLDER|${{ secrets.DB_CONNECTION_STRING }}|g" k8s/deployment.yml
 
       # Despliega manifiestos K8s
       - name: Deploy to DigitalOcean Kubernetes
