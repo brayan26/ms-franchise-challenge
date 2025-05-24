@@ -6,10 +6,12 @@ spec:
   selector:
     app: ms-franchise
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
       targetPort: 8001
-    - protocol: TCP
+    - name: mongodb
+      protocol: TCP
       port: 27017
       targetPort: 27017
   type: LoadBalancer
