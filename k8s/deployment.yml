@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-franchise
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ms-franchise
+  template:
+    metadata:
+      labels:
+        app: ms-franchise
+    spec:
+      containers:
+        - name: ms-franchise-neg
+          image: ghcr.io/brayan26/ms-franchise-challenge:0.0.0
+          ports:
+            - containerPort: 8001
+          env:
+            - name: DB_CONNECTION_STRING
+              value: "MONGO_URL_PLACEHOLDER"

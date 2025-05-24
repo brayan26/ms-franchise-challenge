@@ -1,0 +1,23 @@
+server:
+  port: 8001
+
+springdoc:
+  webflux:
+    base-path: /api/v1
+
+spring:
+  error:
+    whitelabel:
+      enabled: false
+  webflux:
+    base-path: /api/v1
+  application:
+    name: ms-franchise-neg
+  data:
+    mongodb:
+      uri: ${DB_CONNECTION_STRING}
+
+#Project info
+app:
+  version: @project.version@
+  name: @project.name@

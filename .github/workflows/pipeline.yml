@@ -1,0 +1,154 @@
+name: Java project with Maven
+
+on:
+  push:
+    branches: [main, develop, staging]
+  pull_request:
+    branches: [main, develop, staging]
+    types: [opened, synchronize]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  CLUSTER_NAME: nequi-cluster
+  DO_REGION: nyc1
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+          cache: 'maven'
+      - name: Build with Maven
+        run: mvn -B clean compile --file pom.xml
+
+  tests:
+    needs: [ compile ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+      - name: Build with Maven
+        run: mvn test
+
+  BuildContainer:
+    needs: [ tests ]
+    if: ${{ github.event_name == 'push' || github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+    outputs:
+      DOCKER_IMAGE: ${{ steps.set-output.outputs.docker_image }}
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract project version
+        run:  echo "PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: .
+          push: true
+          tags: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.PROJECT_VERSION }}"
+          labels: ${{ steps.meta.outputs.labels }}`
+
+      - name: Project version compiled
+        run:  echo $PROJECT_VERSION
+
+      - name: Set output environment variable
+        id: set-output
+        run: |
+          echo "DOCKER_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.PROJECT_VERSION }}" >> $GITHUB_ENV
+          echo "docker_image=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.PROJECT_VERSION }}" >> $GITHUB_OUTPUT
+
+  Deploy-DigitalOcean:
+    runs-on: ubuntu-latest
+    needs:
+      - BuildContainer
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event.pull_request.merged == true)
+    steps:
+      - name: Validate secrets
+        run: |
+          if [ -z "${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}" ]; then
+            echo "DIGITALOCEAN_ACCESS_TOKEN is not set"
+            exit 1
+          fi
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.0
+
+      - name: Check if Terraform files changed
+        id: tf-check
+        run: |
+          git fetch origin ${{ github.event.before }}
+          CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep "^infra/.*\.tf$" || true)
+          echo "changed_tf_files=$CHANGED" >> $GITHUB_OUTPUT
+
+      - name: Terraform Init
+        working-directory: infra
+        run: terraform init
+
+      - name: Show changed Terraform files
+        if: steps.tf-check.outputs.changed_tf_files != ''
+        run: echo "${{ steps.tf-check.outputs.changed_tf_files }}"
+
+      - name: Terraform Apply
+        if: steps.tf-check.outputs.changed_tf_files != ''
+        working-directory: infra
+        run: |
+          export TF_VAR_do_token=${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          terraform apply -auto-approve
+
+      # Instala doctl y configura kubeconfig
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Save kubeconfig
+        run: doctl kubernetes cluster kubeconfig save ${{ env.CLUSTER_NAME }}
+
+      - name: Update image tag in manifest
+        run: |
+          sed -i "s|image:.*|image: ${{ needs.BuildContainer.outputs.DOCKER_IMAGE }}|g" k8s/deployment.yaml
+
+      - name: Update database string connection
+        run: |
+          sed -i "s|MONGO_URL_PLACEHOLDER|${{ secrets.DB_CONNECTION_STRING }}|g" k8s/deployment.yaml
+
+      # Despliega manifiestos K8s
+      - name: Deploy to DigitalOcean Kubernetes
+        run: |
+          kubectl apply -f k8s/
