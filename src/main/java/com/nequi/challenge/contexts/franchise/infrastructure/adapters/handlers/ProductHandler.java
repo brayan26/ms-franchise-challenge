@@ -1,5 +1,6 @@
 package com.nequi.challenge.contexts.franchise.infrastructure.adapters.handlers;
 
+import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.DtoValidator;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.ProductRequestDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.mappers.ProductMapper;
 import com.nequi.challenge.contexts.franchise.infrastructure.services.ProductService;
@@ -14,11 +15,13 @@ import reactor.core.publisher.Mono;
 @Component
 @RequiredArgsConstructor
 public class ProductHandler {
+   private final DtoValidator validator;
    private final ProductMapper mapper;
    private final ProductService service;
 
    public Mono<ServerResponse> create(ServerRequest request) {
       return request.bodyToMono(ProductRequestDto.class)
+            .doOnNext(validator::validate)
             .flatMap(dto -> this.service.create(this.mapper.toDomain(dto)))
             .flatMap(response -> ServerResponse
                   .status(HttpStatus.CREATED)
@@ -30,6 +33,7 @@ public class ProductHandler {
    public Mono<ServerResponse> update(ServerRequest request) {
       String id = request.pathVariable("id");
       return request.bodyToMono(ProductRequestDto.class)
+            .doOnNext(validator::validate)
             .flatMap(dto -> this.service.update(id, this.mapper.toDomain(dto)))
             .flatMap(response -> ServerResponse
                   .status(HttpStatus.OK)

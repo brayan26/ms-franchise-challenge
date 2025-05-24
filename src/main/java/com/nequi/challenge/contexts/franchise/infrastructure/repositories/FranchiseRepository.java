@@ -1,21 +1,21 @@
-package com.nequi.challenge.contexts.franchise.infrastructure.persistence.repositories;
+package com.nequi.challenge.contexts.franchise.infrastructure.repositories;
 
 import com.nequi.challenge.contexts.franchise.domain.model.Franchise;
 import com.nequi.challenge.contexts.franchise.domain.repositories.IFranchiseRepository;
 import com.nequi.challenge.contexts.franchise.infrastructure.mappers.FranchiseMapper;
 import com.nequi.challenge.contexts.franchise.infrastructure.persistence.collections.FranchiseDocument;
-import com.nequi.challenge.contexts.franchise.infrastructure.persistence.repositories.mongo.MongoFranchiseRepository;
+import com.nequi.challenge.contexts.franchise.infrastructure.persistence.repositories.MongoFranchiseRepository;
 import com.nequi.challenge.contexts.shared.domain.constants.ErrorMessages;
 import com.nequi.challenge.contexts.shared.domain.exceptions.GenericNotFoundException;
 import com.nequi.challenge.contexts.shared.infrastructure.util.BuildErrorUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class FranchiseRepository implements IFranchiseRepository {
    private final MongoFranchiseRepository repository;

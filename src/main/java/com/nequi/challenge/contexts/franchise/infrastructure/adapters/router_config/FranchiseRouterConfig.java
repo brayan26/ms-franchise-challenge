@@ -1,4 +1,4 @@
-package com.nequi.challenge.contexts.franchise.infrastructure.config;
+package com.nequi.challenge.contexts.franchise.infrastructure.adapters.router_config;
 
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.FranchiseRequestDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.handlers.FranchiseHandler;

@@ -1,5 +1,6 @@
 package com.nequi.challenge.contexts.franchise.infrastructure.adapters.handlers;
 
+import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.DtoValidator;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.FranchiseRequestDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.FranchiseResponseDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.mappers.FranchiseMapper;
@@ -15,11 +16,13 @@ import reactor.core.publisher.Mono;
 @Component
 @RequiredArgsConstructor
 public class FranchiseHandler {
+   private final DtoValidator validator;
    private final FranchiseMapper mapper;
    private final FranchiseService service;
 
    public Mono<ServerResponse> create(ServerRequest request) {
       return request.bodyToMono(FranchiseRequestDto.class)
+            .doOnNext(validator::validate)
             .flatMap(dto -> this.service.create(this.mapper.toDomain(dto)))
             .flatMap(response -> ServerResponse
                   .status(HttpStatus.CREATED)

@@ -1,10 +1,7 @@
-package com.nequi.challenge.contexts.franchise.infrastructure.config;
+package com.nequi.challenge.contexts.franchise.infrastructure.adapters.router_config;
 
-import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.FranchiseRequestDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.InventoryRequestDto;
-import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.ProductRequestDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.handlers.InventoryHandler;
-import com.nequi.challenge.contexts.franchise.infrastructure.adapters.handlers.ProductHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
