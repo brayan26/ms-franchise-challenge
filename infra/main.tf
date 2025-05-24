@@ -37,7 +37,7 @@ resource "digitalocean_kubernetes_node_pool" "autoscale-pool-01" {
   auto_scale = true
   min_nodes  = 1
   max_nodes  = 3
-  tags       = ["backend"]
+  tags = ["backend"]
 
   labels = {
     service  = "backend"
@@ -46,6 +46,6 @@ resource "digitalocean_kubernetes_node_pool" "autoscale-pool-01" {
 }
 
 output "kubeconfig" {
-  value = digitalocean_kubernetes_cluster.nequi_cluster.kube_config[0].raw_config
+  value     = digitalocean_kubernetes_cluster.nequi_cluster.kube_config[0].raw_config
   sensitive = true
 }
