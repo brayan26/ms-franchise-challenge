@@ -19,6 +19,8 @@ target/
 *.iml
 *.iprgs
 .env
+.terraform
+.terraform.lock*
 
 .DS_Store
 
