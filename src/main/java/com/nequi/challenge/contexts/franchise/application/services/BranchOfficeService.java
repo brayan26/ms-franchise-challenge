@@ -1,4 +1,4 @@
-package com.nequi.challenge.contexts.franchise.infrastructure.services;
+package com.nequi.challenge.contexts.franchise.application.services;
 
 import com.nequi.challenge.contexts.franchise.application.uses_case.branch_office.BranchOfficeCreatorUseCase;
 import com.nequi.challenge.contexts.franchise.application.uses_case.branch_office.BranchOfficeLocatorByFranchiseIdUseCase;

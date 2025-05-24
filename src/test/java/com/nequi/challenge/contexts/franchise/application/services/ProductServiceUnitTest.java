@@ -1,5 +1,6 @@
 package com.nequi.challenge.contexts.franchise.infrastructure.services;
 
+import com.nequi.challenge.contexts.franchise.application.services.ProductService;
 import com.nequi.challenge.contexts.franchise.application.uses_case.products.ProductCreatorUseCase;
 import com.nequi.challenge.contexts.franchise.application.uses_case.products.ProductEraserUseCase;
 import com.nequi.challenge.contexts.franchise.application.uses_case.products.ProductLocatorByIdUseCase;
