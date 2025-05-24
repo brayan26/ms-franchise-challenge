@@ -4,7 +4,7 @@ import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.DtoVal
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.FranchiseRequestDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.FranchiseResponseDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.mappers.FranchiseMapper;
-import com.nequi.challenge.contexts.franchise.infrastructure.services.FranchiseService;
+import com.nequi.challenge.contexts.franchise.application.services.FranchiseService;
 import com.nequi.challenge.contexts.shared.infrastructure.util.BuildErrorUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

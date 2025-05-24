@@ -1,5 +1,6 @@
-package com.nequi.challenge.contexts.franchise.infrastructure.services;
+package com.nequi.challenge.contexts.franchise.application.services;
 
+import com.nequi.challenge.contexts.franchise.application.services.InventoryService;
 import com.nequi.challenge.contexts.franchise.application.uses_case.inventory.InventoryCreatorUseCase;
 import com.nequi.challenge.contexts.franchise.application.uses_case.inventory.InventoryGetterByBranchOfficeUseCase;
 import com.nequi.challenge.contexts.franchise.application.uses_case.inventory.InventoryStockUpdaterUseCase;

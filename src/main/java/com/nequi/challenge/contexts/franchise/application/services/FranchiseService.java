@@ -1,4 +1,4 @@
-package com.nequi.challenge.contexts.franchise.infrastructure.services;
+package com.nequi.challenge.contexts.franchise.application.services;
 
 import com.nequi.challenge.contexts.franchise.application.uses_case.franchise.FranchiseCreatorUseCase;
 import com.nequi.challenge.contexts.franchise.application.uses_case.franchise.FranchiseFinderUseCase;

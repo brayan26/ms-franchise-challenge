@@ -3,7 +3,7 @@ package com.nequi.challenge.contexts.franchise.infrastructure.adapters.handlers;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.DtoValidator;
 import com.nequi.challenge.contexts.franchise.infrastructure.adapters.dto.ProductRequestDto;
 import com.nequi.challenge.contexts.franchise.infrastructure.mappers.ProductMapper;
-import com.nequi.challenge.contexts.franchise.infrastructure.services.ProductService;
+import com.nequi.challenge.contexts.franchise.application.services.ProductService;
 import com.nequi.challenge.contexts.shared.infrastructure.util.BuildErrorUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
