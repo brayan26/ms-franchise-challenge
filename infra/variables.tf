@@ -20,11 +20,6 @@ variable "k8s_version" {
 }
 
 variable "node_size" {
-  default     = "s-2vcpu-4gb"
+  default     = "s-1vcpu-2gb"
   description = "Tamaño de cada nodo"
-}
-
-variable "node_count" {
-  default     = 2
-  description = "Cantidad inicial de nodos"
 }
