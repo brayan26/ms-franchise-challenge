@@ -33,7 +33,7 @@ Hexagonal architecture + DDD + Solid principles + Design patterns (Mother Object
 
 
 ## Run
-Run application using maven
+Run application using maven or docker
 
 ```
 run: sh docker-compose up
@@ -54,7 +54,7 @@ run test: sh ./mvnw clean test
 
 ## Swagger
 Access locally via the route http://localhost:8001/api/v1/swagger-ui/index.html
-Access remote via the route http://167.172.3.41/api/v1/swagger-ui/index.html
+Access remote via the route [http://167.172.3.41/api/v1/swagger-ui/index.html](http://167.172.3.41/api/v1/webjars/swagger-ui/index.html)
 
 ## Domain Driven Architectures
 
@@ -104,7 +104,7 @@ Routes are configuration objects whose responsibilities are to check the request
 
 Plugins are configuration object that package an assembly of features (ex: authentication & security concerns, routes, pre-handlers, etc.) and are registered at the server startup.
 
-### RouterConfig
+## RouterConfig
 
 Routes are the entry points to the application context.
 
