@@ -11,4 +11,6 @@ public interface MongoInventoryRepository extends ReactiveMongoRepository<Invent
    Mono<Boolean> existsByBranchOfficeIdAndProductId(String branchOfficeId, String productId);
    Mono<InventoryDocument> findByBranchOfficeIdAndProductId(String branchOfficeId, String productId);
    Flux<InventoryDocument> findByBranchOfficeId(String branchOfficeId);
+   Mono<Void> deleteByProductId(String productoId);
+   Mono<Void> deleteByBranchOfficeIdAndProductId(String branchOfficeId, String productoId);
 }

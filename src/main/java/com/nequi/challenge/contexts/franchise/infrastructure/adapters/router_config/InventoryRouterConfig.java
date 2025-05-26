@@ -108,11 +108,40 @@ public class InventoryRouterConfig {
                            @ApiResponse(responseCode = "200", description = "Sorted inventory"),
                      }
                )
+         ),
+         @RouterOperation(
+               path = "/inventory/product/{branchOfficeId}/{productId}/delete",
+               produces = {MediaType.APPLICATION_JSON_VALUE},
+               method = RequestMethod.DELETE,
+               beanClass = InventoryHandler.class,
+               beanMethod = "deleteProductWithInventory",
+               operation = @Operation(
+                     operationId = "deleteProductWithInventory",
+                     summary = "Delete product with inventory",
+                     parameters = {
+                           @Parameter(
+                                 name = "branchOfficeId",
+                                 in = ParameterIn.PATH,
+                                 required = true,
+                                 description = "Branch office id"
+                           ),
+                           @Parameter(
+                                 name = "productId",
+                                 in = ParameterIn.PATH,
+                                 required = true,
+                                 description = "Product id"
+                           )
+                     },
+                     responses = {
+                           @ApiResponse(responseCode = "204", description = "Inventory deleted"),
+                     }
+               )
          )
    })
    public RouterFunction<ServerResponse> routerInventoryFunction(InventoryHandler inventoryHandler) {
       return RouterFunctions.route()
             .POST("/inventory/addProduct", inventoryHandler::addProduct)
+            .DELETE("/inventory/product/{branchOfficeId}/{productId}/delete", inventoryHandler::deleteProductWithInventory)
             .PATCH("/inventory/stock/update", inventoryHandler::updateStock)
             .GET("/inventory/{branchOfficeId}/find", inventoryHandler::findByBranchOfficeId)
             .GET("/inventory/{franchiseId}/topStopProductPerBranchOfficeOfFranchise", inventoryHandler::topStopProductPerBranchOfficeOfFranchise)
