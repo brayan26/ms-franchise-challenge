@@ -111,4 +111,14 @@ public class InventoryRepository implements IInventoryRepository {
                         .build())
             );
    }
+
+   @Override
+   public Mono<Void> deleteInventoryByProductIdAndBranchOfficeId(String branchOfficeId, String productId){
+      return repository.deleteByBranchOfficeIdAndProductId(branchOfficeId, productId);
+   }
+
+   @Override
+   public Mono<Void> deleteProductWithInventory(String productId){
+      return repository.deleteByProductId(productId);
+   }
 }
