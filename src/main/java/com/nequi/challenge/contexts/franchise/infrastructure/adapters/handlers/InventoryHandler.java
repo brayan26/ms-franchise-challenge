@@ -51,4 +51,10 @@ public class InventoryHandler {
             .map(this.mapper::toResponseDto);
       return ServerResponse.ok().body(response, InventoryResponseDto.class);
    }
+
+   public Mono<ServerResponse> deleteProductWithInventory(ServerRequest request) {
+      String productId = request.pathVariable("productId");
+      String branchOfficeId = request.pathVariable("branchOfficeId");
+      return this.service.deleteProductWithInventory(branchOfficeId, productId).then(ServerResponse.noContent().build());
+   }
 }

@@ -1,9 +1,6 @@
 package com.nequi.challenge.contexts.franchise.application.services;
 
-import com.nequi.challenge.contexts.franchise.application.uses_case.inventory.InventoryCreatorUseCase;
-import com.nequi.challenge.contexts.franchise.application.uses_case.inventory.InventoryGetterByBranchOfficeUseCase;
-import com.nequi.challenge.contexts.franchise.application.uses_case.inventory.InventoryStockUpdaterUseCase;
-import com.nequi.challenge.contexts.franchise.application.uses_case.inventory.InventoryTopStockProductPerBranchOfficeUseCase;
+import com.nequi.challenge.contexts.franchise.application.uses_case.inventory.*;
 import com.nequi.challenge.contexts.franchise.domain.model.Inventory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +14,7 @@ public class InventoryService {
    private final InventoryStockUpdaterUseCase inventoryStockUpdaterUseCase;
    private final InventoryTopStockProductPerBranchOfficeUseCase inventoryTopStockProductPerBranchOfficeUseCase;
    private final InventoryGetterByBranchOfficeUseCase inventoryGetterByBranchOfficeUseCase;
+   private final InventoryEraserByProductIdAndBranchOfficeIdUseCase inventoryEraserByProductIdAndBranchOfficeIdUseCase;
 
    public Mono<Inventory> addProduct(Inventory inventory) {
       return this.inventoryCreatorUseCase.execute(inventory);
@@ -26,6 +24,9 @@ public class InventoryService {
       return this.inventoryStockUpdaterUseCase.execute(inventory);
    }
 
+   public Mono<Void> deleteProductWithInventory(String branchOfficeId, String productId) {
+      return this.inventoryEraserByProductIdAndBranchOfficeIdUseCase.execute(branchOfficeId, productId);
+   }
    public Flux<Inventory> topStopProductPerBranchOfficeOfFranchise(String franchiseId) {
       return this.inventoryTopStockProductPerBranchOfficeUseCase.execute(franchiseId);
    }
