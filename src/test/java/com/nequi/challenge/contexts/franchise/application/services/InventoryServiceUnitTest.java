@@ -1,10 +1,6 @@
 package com.nequi.challenge.contexts.franchise.application.services;
 
-import com.nequi.challenge.contexts.franchise.application.services.InventoryService;
-import com.nequi.challenge.contexts.franchise.application.uses_case.inventory.InventoryCreatorUseCase;
-import com.nequi.challenge.contexts.franchise.application.uses_case.inventory.InventoryGetterByBranchOfficeUseCase;
-import com.nequi.challenge.contexts.franchise.application.uses_case.inventory.InventoryStockUpdaterUseCase;
-import com.nequi.challenge.contexts.franchise.application.uses_case.inventory.InventoryTopStockProductPerBranchOfficeUseCase;
+import com.nequi.challenge.contexts.franchise.application.uses_case.inventory.*;
 import com.nequi.challenge.contexts.franchise.domain.model.Inventory;
 import com.nequi.challenge.contexts.franchise.domain.model.InventoryMotherObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +17,7 @@ public class InventoryServiceUnitTest {
    private InventoryStockUpdaterUseCase updater;
    private InventoryTopStockProductPerBranchOfficeUseCase topStockProductPerBranchOfficeUseCase;
    private InventoryGetterByBranchOfficeUseCase inventoryGetterByBranchOfficeUseCase;
+   private InventoryEraserByProductIdAndBranchOfficeIdUseCase inventoryEraserByProductIdAndBranchOfficeIdUseCase;
 
    private InventoryService service;
 
@@ -30,8 +27,10 @@ public class InventoryServiceUnitTest {
       updater = mock(InventoryStockUpdaterUseCase.class);
       topStockProductPerBranchOfficeUseCase = mock(InventoryTopStockProductPerBranchOfficeUseCase.class);
       inventoryGetterByBranchOfficeUseCase = mock(InventoryGetterByBranchOfficeUseCase.class);
+      inventoryEraserByProductIdAndBranchOfficeIdUseCase = mock(InventoryEraserByProductIdAndBranchOfficeIdUseCase.class);
 
-      service = new InventoryService(creator, updater, topStockProductPerBranchOfficeUseCase, inventoryGetterByBranchOfficeUseCase);
+      service = new InventoryService(creator, updater, topStockProductPerBranchOfficeUseCase,
+            inventoryGetterByBranchOfficeUseCase, inventoryEraserByProductIdAndBranchOfficeIdUseCase);
    }
 
    @Test
@@ -87,5 +86,17 @@ public class InventoryServiceUnitTest {
             .verifyComplete();
 
       verify(inventoryGetterByBranchOfficeUseCase).execute(branchOfficeId);
+   }
+
+   @Test
+   void shouldEraserInventoryByProductId() {
+      Inventory inventory = InventoryMotherObject.random();
+
+      when(inventoryEraserByProductIdAndBranchOfficeIdUseCase.execute(inventory.branchOfficeId(), inventory.productId())).thenReturn(Mono.empty());
+
+      StepVerifier.create(service.deleteProductWithInventory(inventory.branchOfficeId(), inventory.productId()))
+            .verifyComplete();
+
+      verify(inventoryEraserByProductIdAndBranchOfficeIdUseCase).execute(inventory.branchOfficeId(), inventory.productId());
    }
 }
