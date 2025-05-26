@@ -10,6 +10,7 @@ import com.nequi.challenge.contexts.shared.domain.exceptions.GenericNotFoundExce
 import com.nequi.challenge.contexts.shared.infrastructure.util.BuildErrorUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
@@ -18,7 +19,9 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ProductRepository implements IProductRepository {
    private final MongoProductRepository repository;
+   private final InventoryRepository inventoryRepository;
    private final ProductMapper mapper;
+   private final TransactionalOperator transactionalOperator;
 
    @Override
    public Mono<Product> create(Product product) {
@@ -53,6 +56,9 @@ public class ProductRepository implements IProductRepository {
 
    @Override
    public Mono<Void> deleteProduct(String id) {
-      return this.repository.deleteById(id);
+      return findOne(id).flatMap(product ->
+            inventoryRepository.deleteProductWithInventory(id)
+            .then(repository.deleteById(id))
+            .as(transactionalOperator::transactional));
    }
 }
